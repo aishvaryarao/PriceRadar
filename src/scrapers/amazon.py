@@ -101,7 +101,7 @@ class AmazonScraper(BaseScraper):
         """
         try:
             # Product name
-            name_elem = await card.query_selector("h2 a span")
+            name_elem = await card.query_selector("h2 span")
             name = await name_elem.text_content() if name_elem else None
 
             if not name:
@@ -130,7 +130,7 @@ class AmazonScraper(BaseScraper):
             image_url = await img_elem.get_attribute("src") if img_elem else None
 
             # Product URL
-            link_elem = await card.query_selector("h2 a")
+            link_elem = await card.query_selector("a.a-link-normal")
             product_url = await link_elem.get_attribute("href") if link_elem else None
             product_url = f"{self.base_url}{product_url}" if product_url else None
 

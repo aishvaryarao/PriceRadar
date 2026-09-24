@@ -27,8 +27,13 @@ const Home = () => {
       setKpis(kpiRes.data)
 
       // Fetch deals - using min_drop=0 to show all products in demo
-      const dealsRes = await getPriceRadarAPI.listDeals(selectedCategory, 0, 50)
-      setProducts(dealsRes.data)
+      const productsRes = await getPriceRadarAPI.listProducts(
+        selectedCategory || null,
+        platform === 'all' ? null : platform,
+        500
+        )
+      setProducts(productsRes.data)
+
     } catch (err) {
       setError(err.message)
       console.error(err)
