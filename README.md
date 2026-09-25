@@ -1,47 +1,186 @@
-# PriceRadar — Real-Time E-Commerce Price Intelligence Platform
+PriceRadar — Real-Time E-Commerce Price Intelligence Platform
 
 PriceRadar is a full-stack price intelligence platform that collects product and pricing data from Amazon India and Flipkart, stores price history in PostgreSQL, analyzes pricing trends, and uses machine learning to identify potential deals.
 
-The project combines web scraping, data engineering, analytics, machine learning, REST APIs, and a React dashboard into a single end-to-end application.
 
-## Features
+Features
 
-- Multi-platform price tracking — Collects product data from Amazon India and Flipkart
-- Price history — Stores historical prices for tracking price movements
-- Price analytics — Calculates minimum, maximum, average, volatility, and price-drop metrics
-- ML-based deal detection — Uses a Random Forest classifier to identify potential deals
-- Scheduled scraping — Automatically runs the scraping pipeline at configured intervals
-- FastAPI backend — Provides REST APIs for products, deals, analytics, and price history
-- React dashboard — Interactive interface for browsing products and pricing information
-- Docker support — Runs the backend, frontend, and PostgreSQL database as a containerized stack
+1. Multi-platform price tracking using Amazon India and Flipkart
 
-## Tech Stack
+2. Historical price tracking using PostgreSQL
 
-### Backend
+3. Price analytics including averages, volatility, and price drops
 
-- Python
-- FastAPI
-- Playwright
-- PostgreSQL
-- SQLAlchemy
-- APScheduler
+4. Random Forest-based deal detection
 
-### Data and Machine Learning
+5. Automated scraping with APScheduler
 
-- Pandas
-- NumPy
-- Scikit-learn
-- Joblib
+6. FastAPI REST backend
 
-### Frontend
+7. React dashboard with price visualizations
 
-- React
-- Vite
-- Axios
-- Recharts
+8. Dockerized application stack
+   
 
-### DevOps
+Architecture
 
-- Docker
-- Docker Compose
-- Git / GitHub
+                    ┌─────────────────┐
+                    │  Amazon India   │
+                    └────────┬────────┘
+                             │
+                    ┌────────┴────────┐
+                    │    Flipkart     │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │   Playwright    │
+                    │    Scrapers     │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │ Data Cleaning & │
+                    │  Normalization  │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │   PostgreSQL    │
+                    │                 │
+                    │ Products        │
+                    │ Price History   │
+                    │ Deal Alerts     │
+                    └────────┬────────┘
+                             │
+                  ┌──────────┴──────────┐
+                  ▼                     ▼
+          ┌───────────────┐     ┌────────────────┐
+          │    Price      │     │   ML Deal      │
+          │   Analytics   │     │   Detector     │
+          └───────┬───────┘     └───────┬────────┘
+                  │                      │
+                  └──────────┬───────────┘
+                             ▼
+                    ┌─────────────────┐
+                    │     FastAPI     │
+                    │    REST API     │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │  React + Vite   │
+                    │    Dashboard    │
+                    └─────────────────┘
+                    
+
+Tech Stack
+
+Backend: Python, FastAPI, Playwright, SQLAlchemy, APScheduler
+
+Database: PostgreSQL
+
+Data & ML: Pandas, NumPy, Scikit-learn, Joblib
+
+Frontend: React, Vite, Axios, Recharts
+
+DevOps: Docker, Docker Compose, Git, GitHub
+
+Machine Learning
+
+PriceRadar uses a Random Forest classifier for potential deal detection.
+
+The model uses:
+
+Price drop from historical maximum
+
+Current price vs. 7-day average
+
+Current price vs. 30-day average
+
+Price volatility
+
+The current model is trained on synthetic data and is intended as a project-level demonstration of the deal detection pipeline.
+
+
+Project Structure
+
+```text
+┌───────────────────────────────────────────────────────────┐
+│                       PriceRadar                          │
+├───────────────────────┬───────────────────────────────────┤
+│ database/             │ frontend/                         │
+│ └── schema.sql        │ ├── src/                          │
+│                       │ │   ├── api/                      │
+│ models/               │ │   ├── components/               │
+│ └── deal_detector     │ │   └── pages/                    │ 
+│     .joblib           │ ├── package.json                  │
+│                       │ └── vite.config.js                │
+├───────────────────────┼───────────────────────────────────┤
+│ src/                  │ tests/                            │
+│ ├── analytics/        │                                   │
+│ ├── api/              │                                   │
+│ ├── database/         │                                   │
+│ ├── models/           │                                   │
+│ ├── pipeline/         │                                   │
+│ └── scrapers/         │                                   │
+├───────────────────────┴───────────────────────────────────┤
+│ Dockerfile  │  docker-compose.yml  │  requirements.txt    │
+│ README.md                                                 │
+└───────────────────────────────────────────────────────────┘
+```
+
+
+Running the Project
+
+Prerequisites
+
+1. Docker Desktop
+
+2. Git
+
+Setup
+
+git clone https://github.com/aishvaryarao/PriceRadar.git
+cd PriceRadar
+
+Create .env using .env.example, then run:
+
+docker compose up --build
+
+Application
+
+Frontend: http://localhost:3000
+
+Backend: http://localhost:8000
+
+API Docs: http://localhost:8000/docs
+
+To stop the application:
+
+docker compose down
+
+Testing
+
+pytest
+
+
+Project Objective
+
+PriceRadar demonstrates an end-to-end data-driven application combining:
+
+Web scraping
+
+Data engineering
+
+Database management
+
+Data analytics
+
+Machine learning
+
+REST APIs
+
+Frontend development
+
+Docker
